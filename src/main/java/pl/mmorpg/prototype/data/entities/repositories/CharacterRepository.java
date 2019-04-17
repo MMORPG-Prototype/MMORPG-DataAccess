@@ -19,7 +19,7 @@ public interface CharacterRepository extends CrudRepository<Character, Integer>
 	@Transactional
 	default Character findOneAndFetchEverythingRelated(Integer id)
 	{
-		Character result = findOne(id);
+		Character result = findById(id).get();
 		result.getItemQuickAccessBarConfig().size();
 		result.getSpellQuickAccessBarConfig().size();
 		result.getSpells().size();
