@@ -3,6 +3,7 @@ package pl.mmorpg.prototype.data.jsonconfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 import java.io.*;
@@ -78,11 +79,10 @@ public abstract class JsonUserType implements UserType
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings,
-            SessionImplementor sessionImplementor, Object o)
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
             throws HibernateException, SQLException
     {
-        final String cellContent = resultSet.getString(strings[0]);
+        final String cellContent = rs.getString(names[0]);
         if (cellContent == null)
             throw new RuntimeException("cell Content is null");
 
@@ -97,7 +97,7 @@ public abstract class JsonUserType implements UserType
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
             throws HibernateException, SQLException
     {
         if (value == null)
@@ -116,7 +116,6 @@ public abstract class JsonUserType implements UserType
         {
             throw new RuntimeException("Failed to convert Invoice to String: " + ex.getMessage(), ex);
         }
-
     }
 
 }
